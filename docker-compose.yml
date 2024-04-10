@@ -1,0 +1,7 @@
+version: '3.8'
+
+services:
+  web:
+    image: capstone-image
+    ports:
+      - "8000:80"
