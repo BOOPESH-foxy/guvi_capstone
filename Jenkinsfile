@@ -1,45 +1,15 @@
-pipeline {
-    agent any
-
-    stages {
-        stage('Hello') {
-            steps {
-                echo 'Hello'
-            }
-        }
+node {   
+    stage('Clone repository') {
+        git credentialsId: 'git', url: 'https://github.com/BOOPESH-foxy/guvi_capstone'
     }
-}
-pipeline {
-    agent any
-
-    stages {
-        stage('Build and Push to Dev Repo') {
-            when {
-                branch 'dev'
-            }
-            steps {
-                script {
-                    docker.build("dev:latest")
-                    docker.withRegistry('https://registry.hub.docker.com', 'dockerhub-credentials') {
-                        docker.image("dev:latest").push()
-                    }
-                }
-            }
-        }
-
-        stage('Build and Push to Prod Repo') {
-            when {
-                branch 'master'
-            }
-            steps {
-                script {
-                    docker.build("prod:latest")
-                    docker.withRegistry('https://registry.hub.docker.com', 'dockerhub-credentials') {
-                        docker.image("prod:latest").push()
-                    }
-                }
-            }
-        }
+    
+    stage('Build image') {
+       dockerImage = docker.build(" 989407/dev:latest")
     }
+    
+ stage('Push image') {
+        withDockerRegistry([ credentialsId: "dockerhub-credentials", url: "" ]) {
+        dockerImage.push()
+        }
+    }    
 }
-
