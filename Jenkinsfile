@@ -13,9 +13,9 @@ pipeline {
     agent any
 
     stages {
-        stage(‘Build Docker’) {
+        stage('Build Docker') {
             steps {
-                sh ‘docker build -t capstone-image .’
+                sh 'docker build -t capstone-image .'
                   }
             }
         }
