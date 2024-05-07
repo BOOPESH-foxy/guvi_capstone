@@ -13,10 +13,33 @@ pipeline {
     agent any
 
     stages {
-        stage('Build Docker') {
+        stage('Build and Push to Dev Repo') {
+            when {
+                branch 'dev'
+            }
             steps {
-                sh 'docker build -t capstone-image .'
-                  }
+                script {
+                    docker.build("dev:latest")
+                    docker.withRegistry('https://registry.hub.docker.com', 'dockerhub-credentials') {
+                        docker.image("dev:latest").push()
+                    }
+                }
             }
         }
+
+        stage('Build and Push to Prod Repo') {
+            when {
+                branch 'master'
+            }
+            steps {
+                script {
+                    docker.build("prod:latest")
+                    docker.withRegistry('https://registry.hub.docker.com', 'dockerhub-credentials') {
+                        docker.image("prod:latest").push()
+                    }
+                }
+            }
+        }
+    }
 }
+
