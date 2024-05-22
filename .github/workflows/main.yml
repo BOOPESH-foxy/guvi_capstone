@@ -28,7 +28,7 @@ jobs:
 
     - name: Run Checkov scan
       run: |
-        checkov -f ./Dockerfile -o .sarif --output-file-path foo.sarif
+        checkov -f ./Dockerfile -o sarif --output-file-path foo.sarif
     - name: upload to Github artifacts
       uses: actions/upload-artifact@v3
       with:
