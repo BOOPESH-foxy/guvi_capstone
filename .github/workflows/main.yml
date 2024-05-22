@@ -28,7 +28,7 @@ jobs:
 
     - name: Run Checkov scan
       run: |
-        checkov -f ./Dockerfile -o json | tee checkov_results.json
+        checkov -f ./Dockerfile -out foo.cov
     - name: upload to Github artifacts
       uses: actions/upload-artifact@v3
       with:
